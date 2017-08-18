@@ -1,0 +1,32 @@
+ 
+model
+{ # i counts the two arms of all 19 studies
+  for (i in 1:38)
+  {
+    r[i] ~ dbin(p[i], n[i]);
+    logit(p[i]) <- mu[s[i]]+delta[i]*(1-equals(t[i],b[i]));
+    delta[i] ~ dnorm(md[i], prec);
+    md[i] <- d[t[i]]-d[b[i]];
+  }
+  # j represents the CABG arm
+  for (j in 1:19)
+  {
+    mu[j] ~ dnorm(0, .001);
+  }
+  prec ~ dgamma(0.001, 0.001);
+  d[1] <- 0;
+  # K represents the relative treatment comparator: k=2 is PCI, k=3 is MT
+  for (k in 2:3)
+  {
+    d[k] ~ dnorm(0, .001)
+  }
+  for (c in 1:2)
+  {
+    for (k in (c+1):3)
+    {
+      lor[c,k] <- d[k]-d[c];
+      log(or[c,k]) <- lor[c,k];
+    }
+  }
+}
+}
