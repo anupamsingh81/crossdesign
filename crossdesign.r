@@ -23,12 +23,14 @@ for (l in 1:3)
 mu.theta.study[l] ~ dnorm(mu.theta, prec.theta); 
 or.theta.study[l] <- exp(mu.theta.study[l]); 
 prec.theta.study[l] <- 1/(tau.theta.study[l]*tau.theta.study[l]); 
-# prior distribution for tau.theta.study based on HN[0.36^2], giving precision 7.72 
+# prior distribution for tau.theta.study based on HN[0.36^2], giving precision 7.72 ,based on 95% belief that the
+#true underlying OR for a study of a particular type will be <4x or >1/4 the overall OR of that type
 tau.theta.study[l] ~ dnorm(0, 7.72)I(0,); 
 }  
 # prior distribution for mu.theta based on log(500)/1.96 = 3.17 for N[0,10], giving precision 0.1 
 mu.theta ~ dnorm(0, 0.1); 
-# prior distribution for tau.theta based on HN[0.18^2], giving precision 30.86 
+# prior distribution for tau.theta based on HN[0.18^2], giving precision 30.86 , ,based on 95% belief that the
+# the underlying risk ratio for a particular study type will <2× or >1⁄2 the overall population effect
 tau.theta ~ dnorm(0, 30.86)I(0,); 
 prec.theta <- 1/(tau.theta*tau.theta); 
 # global summary odds ratio; 
